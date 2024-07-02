@@ -57,7 +57,7 @@ export class UserService {
     user: CreateUserDto,
     createdBy?: string | undefined,
   ): Promise<User> {
-    const { email, password, lastName, firstName } = user;
+    const { email, password, userName } = user;
 
     const userExists = await this.userRepository.findOneBy({ email });
 
@@ -71,10 +71,8 @@ export class UserService {
 
     const newUser = new User();
     newUser.email = email;
-    newUser.firstName = firstName;
-    newUser.lastName = lastName;
+    newUser.userName = userName;
     newUser.password = hashedPassword;
-    newUser.isActivated = isActivated;
 
     if (!isActivated) {
       // generate validation link
