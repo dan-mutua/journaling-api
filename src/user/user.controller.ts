@@ -21,7 +21,6 @@ import {
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwtAuth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @ApiTags('User')
 @Controller('user')
@@ -88,7 +87,7 @@ export class UserController {
     description: 'User with specified id has been successfully deactivated',
     type: User,
   })
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   deactivate(@Param('id') id: string) {
     return this.userService.updateUser(id, { isActivated: false });
   }
@@ -100,7 +99,7 @@ export class UserController {
     description: 'User with specified id has been successfully activated',
     type: User,
   })
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   activate(@Param('id') id: string) {
     return this.userService.updateUser(id, { isActivated: true });
   }

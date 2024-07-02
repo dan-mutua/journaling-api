@@ -77,7 +77,7 @@ export class UserService {
     if (!isActivated) {
       // generate validation link
       newUser.activationLink = (
-        await this.tokenService.generate(email, firstName)
+        await this.tokenService.generate(email, userName)
       ).accessToken;
     }
 
