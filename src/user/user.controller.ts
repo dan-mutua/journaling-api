@@ -22,8 +22,6 @@ import {
 import { User } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwtAuth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from './decorators/roles.decorator';
-import { Role } from './enums/roles.enum';
 
 @ApiTags('User')
 @Controller('user')
@@ -62,20 +60,6 @@ export class UserController {
     return this.userService.findUserById(req.user.id);
   }
 
-  @Get('/farmers')
-  @ApiOperation({ summary: 'Get list of all farmers' })
-  @ApiOkResponse({
-    description: 'farmers found successfully',
-    type: [Array],
-  })
-  @Roles(Role.counntryAdmin)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  getOfficers() {
-    return Promise.all([
-      this.userService.findAllUsersByRole(Role.farmers),
-    ]).then(([officers]) => [...officers]);
-  }
-
   @Get('/email/:email')
   @ApiOperation({ summary: 'Get user by email.' })
   @ApiOkResponse({
@@ -98,33 +82,12 @@ export class UserController {
     return this.userService.findUserById(id);
   }
 
-  @Patch('/:id/role')
-  @ApiOperation({ summary: 'change user role' })
-  @ApiOkResponse({
-    description: 'User role has been successfully changed',
-    type: User,
-  })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  updateUserRole(
-    @Param('id') id: string,
-    @Body() body: { role: Role; password: string },
-    @Req() req,
-  ) {
-    const itUser = {
-      id: req.user.id,
-      password: body.password,
-    };
-
-    return this.userService.updateUserRole(id, body, itUser);
-  }
-
   @Patch('/:id/deactivate')
   @ApiOperation({ summary: 'Deactivate user' })
   @ApiOkResponse({
     description: 'User with specified id has been successfully deactivated',
     type: User,
   })
-  @Roles(Role.counntryAdmin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   deactivate(@Param('id') id: string) {
     return this.userService.updateUser(id, { isActivated: false });
@@ -137,7 +100,6 @@ export class UserController {
     description: 'User with specified id has been successfully activated',
     type: User,
   })
-  @Roles(Role.counntryAdmin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   activate(@Param('id') id: string) {
     return this.userService.updateUser(id, { isActivated: true });
@@ -156,9 +118,9 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @Req() req,
   ) {
-    const user = await this.userService.findUserById(req.user.id);
+    //const user = await this.userService.findUserById(req.user.id);
 
-    if (id !== req.user.id && user?.role !== Role.counntryAdmin) {
+    if (id !== req.user.id) {
       throw new UnauthorizedException();
     }
 

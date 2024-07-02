@@ -12,7 +12,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { TokenService } from 'src/tokens/token.service';
 import * as bcrypt from 'bcrypt';
-import { Role } from './enums/roles.enum';
 import { EntityCondition } from 'src/utils/entity-condition.type';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AuthService } from 'src/auth/auth.service';
@@ -113,19 +112,6 @@ export class UserService {
     return user;
   }
 
-  public async findUsersByRole(role: Role): Promise<User[]> {
-    return this.userRepository.findBy({
-      role: Role[role],
-      isActivated: true,
-    });
-  }
-
-  public async findAllUsersByRole(role: Role): Promise<User[]> {
-    return this.userRepository.findBy({
-      role: Role[role],
-    });
-  }
-
   public async updateUser(
     id: number | string,
     userUpdateDto: object,
@@ -161,15 +147,5 @@ export class UserService {
 
   async compareHash(value: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(value, hash);
-  }
-
-  async updateUserRole(id, body, itUser) {
-    await this.authService.validateUser(itUser.id, itUser.password, true);
-
-    const user = await this.findUserById(id);
-
-    user.role = body.role;
-
-    return this.userRepository.save(user);
   }
 }

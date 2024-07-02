@@ -6,7 +6,6 @@ import {
   Patch,
   Post,
   Request,
-  Response,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';

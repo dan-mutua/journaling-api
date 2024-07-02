@@ -3,13 +3,11 @@ import { CreateUserDto } from './create-user.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   Matches,
 } from 'class-validator';
-import { Role } from '../enums/roles.enum';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({
@@ -35,20 +33,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   )
   password?: string;
 
-  // user cannot update their role. only IT
-  // @ApiProperty({ example: 'PATIENT', description: 'User role field' })
-  // @IsNotEmpty()
-  // @IsEnum([
-  //   'applicant',
-  //   'officer',
-  //   'supervisor',
-  //   'secretary',
-  //   'it',
-  //   'trialinstitution',
-  //   'compliance',
-  // ])
-  // role?: Role;
-
   @ApiProperty({ example: true, description: 'User activation status field' })
   isActivated?: boolean;
 
@@ -57,10 +41,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'User activation link field',
   })
   activationLink?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  idNumber: string;
 
   @IsString()
   @IsOptional()
