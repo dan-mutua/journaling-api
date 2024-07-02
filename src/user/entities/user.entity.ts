@@ -6,10 +6,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
 } from 'typeorm';
-import { Role } from '../enums/roles.enum';
-import { CountryPest } from 'src/master-pest/entities/country-pest.entity';
 
 @Entity()
 @Unique(['email'])
@@ -26,13 +23,6 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: true })
   lastName: string;
 
-  @Column({
-    type: 'enum',
-    enum: Role,
-    default: Role.farmers,
-  })
-  role: Role;
-
   @Column({ nullable: false })
   password: string;
 
@@ -47,9 +37,6 @@ export class User extends BaseEntity {
 
   @Column({ type: 'boolean', default: true })
   isActivated: boolean;
-
-  @OneToMany(() => CountryPest, (countryPest) => countryPest.createdBy)
-  photos: CountryPest[];
 
   @CreateDateColumn()
   createdAt: Date;

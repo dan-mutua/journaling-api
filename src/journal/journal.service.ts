@@ -19,7 +19,7 @@ export class JournalService {
   }
 
   async findOne(id: number): Promise<Journal> {
-    return this.journalRepository.findOne({ where: id });
+    return this.journalRepository.findOne({ where: { id } });
   }
 
   async update(id: number, entryData: Partial<Journal>): Promise<Journal> {
