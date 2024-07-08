@@ -8,11 +8,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { JournalService } from './journal.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Journal } from './entities/journal-entry.entity';
 import { CreateJournalEntryDto } from './dto/create-journal-entry.dto';
 import { UpdateJournalEntryDto } from './dto/update-journal-entry.dto';
 
+@ApiTags('journal')
 @Controller('journal')
 export class JournalController {
   constructor(private readonly journalService: JournalService) {}
